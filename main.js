@@ -124,7 +124,9 @@ document.addEventListener('DOMContentLoaded', function () {
     function openModal() {
         modal.classList.remove('hidden');
         modal.classList.add('flex');
-        document.body.classList.add('overflow-hidden');
+        document.body.classList.add('overflow-hidden', 'modal-open');
+        document.body.style.overscrollBehavior = 'none';
+        document.body.style.touchAction = 'none';
 
         setTimeout(() => {
             modalBackdrop.classList.remove('opacity-0');
@@ -139,7 +141,9 @@ document.addEventListener('DOMContentLoaded', function () {
         modalBackdrop.classList.add('opacity-0');
         modalContent.classList.remove('opacity-100', 'scale-100');
         modalContent.classList.add('opacity-0', 'scale-95');
-        document.body.classList.remove('overflow-hidden');
+        document.body.classList.remove('overflow-hidden', 'modal-open');
+        document.body.style.overscrollBehavior = '';
+        document.body.style.touchAction = '';
 
         setTimeout(() => {
             modal.classList.add('hidden');
