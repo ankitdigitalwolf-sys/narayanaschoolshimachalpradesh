@@ -72,15 +72,46 @@ document.addEventListener('DOMContentLoaded', function () {
         programsSlider.refresh();
     });
 
-    // 6. FAQ Accordion Logic
+    // 6. FAQ Accordion Logic (Single Open)
+    const faqItems = document.querySelectorAll('.faq-item');
     const faqToggles = document.querySelectorAll('.faq-toggle');
+
     faqToggles.forEach(toggle => {
         toggle.addEventListener('click', () => {
+            const faqItem = toggle.closest('.faq-item');
             const content = toggle.nextElementSibling;
-            const icon = toggle.querySelector('.faq-icon');
-            content.classList.toggle('hidden');
-            if (content.classList.contains('hidden')) { icon.classList.add('rotate-180'); } else { icon.classList.remove('rotate-180'); }
+            const inner = content.querySelector('.inner');
+            const isOpen = faqItem.classList.contains('active');
+
+            // Close all other FAQ items
+            faqItems.forEach(item => {
+                if (item !== faqItem) {
+                    item.classList.remove('active');
+                    const otherContent = item.querySelector('.faq-content');
+                    otherContent.style.maxHeight = '0';
+                    otherContent.style.paddingBottom = '0';
+                }
+            });
+
+            // Toggle current FAQ item
+            if (isOpen) {
+                faqItem.classList.remove('active');
+                content.style.maxHeight = '0';
+                content.style.paddingBottom = '0';
+            } else {
+                faqItem.classList.add('active');
+                const innerHeight = inner ? inner.scrollHeight : content.scrollHeight;
+                content.style.maxHeight = innerHeight + 'px';
+                content.style.paddingBottom = '1.25rem';
+            }
         });
+    });
+
+    // Initialize: ensure all content is hidden
+    faqItems.forEach(item => {
+        const content = item.querySelector('.faq-content');
+        content.style.maxHeight = '0';
+        content.style.overflow = 'hidden';
     });
 
     // 7. Modal Logic
